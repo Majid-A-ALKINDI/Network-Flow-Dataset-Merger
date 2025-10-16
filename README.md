@@ -38,12 +38,32 @@ Each flow record in the merged dataset will contain the following standardized c
 | `flow_rate`    | Throughput (bytes/sec) |
 
 ---
-
 ## ⚙️ Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/Majid-A-ALKINDI/Network-Flow-Dataset-Merger.git
-   cd network-flow-merger
+   cd Network-Flow-Dataset-Merger
    pip install -r requirements.txt
+   
+## ⚙️ 📁 Project Structure
+      network-flow-merger/
+      │
+      ├── merge_datasets.py        # Main script
+      ├── datasets/                # Auto-created folder for raw/extracted data
+      ├── merged_flows.csv         # Final merged dataset
+      ├── merged_flows.parquet     # Optional Parquet output
+      └── README.md
+
+
+▶️ Usage
+
+Run the main script:
+   ```bash  
    python merge_datasets.py
+---
+
+
+
+
+
