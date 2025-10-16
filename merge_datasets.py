@@ -14,9 +14,9 @@ from typing import Iterable, Optional
 
 # ---------- Config ----------
 URLS = {
-    "CIDDS-001": "https://www.hs-coburg.de/fileadmin/media/forschung/CIIDS/CIDDS-001.zip",
-    "Kyoto": "https://www.dropbox.com/s/3q6tu8utkyoto2006.zip?dl=1",
-    "MAWILab": "https://mawi.wide.ad.jp/mawi/samplepoint-F/2020/202009011400_FlowLabel.zip",
+    "CIDDS-001": "https://www.hs-coburg.de/wp-content/uploads/2024/11/CIDDS-001.zip",
+    "Kyoto": "https://www.kaggle.com/api/v1/datasets/download/harshwardhanbhangale/kyoto-2006",
+    "MAWILab": "http://mawi.wide.ad.jp/mawi/samplepoint-F/2020/202005011400.pcap.gz",
 }
 
 REQUIRED_COLUMNS = [
