@@ -1,67 +1,96 @@
-# 🧠 Network Flow Dataset Merger
+# Network Flow Dataset Merger
 
-A Python utility that automatically **downloads**, **extracts**, **normalizes**, and **merges** multiple open network-flow datasets (such as CIDDS-001, Kyoto, and MAWILab) into a single unified CSV or Parquet file — ready for analysis or machine learning.
+Merge multiple public flow-based traffic datasets into one machine-learning-ready dataset with a unified schema.
 
----
+This project focuses on flow-level network data that includes both normal and malicious traffic, and standardizes fields for downstream detection and classification tasks.
 
-## 🚀 Features
+## Key Capabilities
 
-- 📦 **Automatic download** of public datasets (CIDDS-001, Kyoto, MAWILab)  
-- 🗜️ **Smart extraction** — handles ZIP and GZ files automatically  
-- 🧩 **Schema normalization** — converts heterogeneous field names to a common structure  
-- 🧮 **Derived fields** — calculates missing values like total bytes, packet counts, and flow rates  
-- 🧰 **Chunked reading** — supports massive datasets without exhausting RAM  
-- 🪶 **Flexible output** — saves merged dataset to both `merged_flows.csv` and `merged_flows.parquet`  
+- Downloads configured public datasets automatically.
+- Validates cached archives and re-downloads invalid files.
+- Extracts ZIP and GZ archives.
+- Normalizes heterogeneous source columns into one canonical schema.
+- Handles large files with chunked processing.
+- Writes CSV and Parquet outputs.
+- Uses a fixed Parquet schema to avoid cross-chunk schema mismatch issues.
+- Includes a unified supervised target column: `attack_label` (`normal` or `malicious`).
 
----
+## Current Verified Dataset Sources
 
-## 📊 Output Schema
+- CIDDS-001 (HS Coburg)
+- CIDDS-002 (HS Coburg)
 
-Each flow record in the merged dataset will contain the following standardized columns:
+Only verified public sources are enabled by default in `URLS` inside `merge_datasets.py`.
 
-| Column        | Description |
-|----------------|--------------|
-| `src_ip`       | Source IP address |
-| `dst_ip`       | Destination IP address |
-| `src_port`     | Source port number |
-| `dst_port`     | Destination port number |
-| `duration`     | Flow duration (s or ms, auto-normalized) |
-| `tot_bytes`    | Total bytes transferred |
-| `tot_packets`  | Total packet count |
-| `bytes_s`      | Bytes sent |
-| `bytes_r`      | Bytes received |
-| `pkts_s`       | Packets sent |
-| `pkts_r`       | Packets received |
-| `protocol`     | Protocol name or number |
-| `avg_pkt_len`  | Average packet length |
-| `max_pkt_len`  | Maximum packet length |
-| `flow_rate`    | Throughput (bytes/sec) |
+## Output Files
 
----
-## ⚙️ Installation
+Running the script produces:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Majid-A-ALKINDI/Network-Flow-Dataset-Merger.git
-   cd Network-Flow-Dataset-Merger
-   pip install -r requirements.txt
-   
-## ⚙️ 📁 Project Structure
-      network-flow-merger/
-      │
-      ├── merge_datasets.py        # Main script
-      ├── datasets/                # Auto-created folder for raw/extracted data
-      ├── merged_flows.csv         # Final merged dataset
-      ├── merged_flows.parquet     # Optional Parquet output
-      └── README.md
+- `merged_flows.csv`
+- `merged_flows.parquet`
 
+The script does not create parquet part sidecar files.
 
-▶️ Usage
+## Unified Output Schema
 
-Run the main script:
-   ```bash  
-   python merge_datasets.py
----
+| Column | Description |
+|---|---|
+| `src_ip` | Source IP address |
+| `dst_ip` | Destination IP address |
+| `src_port` | Source port |
+| `dst_port` | Destination port |
+| `duration` | Flow duration (auto-normalized if needed) |
+| `tot_bytes` | Total flow bytes |
+| `tot_packets` | Total flow packets |
+| `bytes_s` | Sent bytes |
+| `bytes_r` | Received bytes |
+| `pkts_s` | Sent packets |
+| `pkts_r` | Received packets |
+| `protocol` | Transport protocol |
+| `avg_pkt_len` | Average packet length |
+| `max_pkt_len` | Maximum packet length |
+| `flow_rate` | Byte rate for the flow |
+| `attack_label` | Supervised label: `normal` or `malicious` |
+
+## Installation
+
+```bash
+git clone <your-repository-url>
+cd Network-Flow-Dataset-Merger-main
+pip install -r requirements.txt
+```
+
+## Usage
+
+```bash
+python merge_datasets.py
+```
+
+## Project Structure
+
+```text
+Network-Flow-Dataset-Merger-main/
+  merge_datasets.py
+  README.md
+  requirements.txt
+```
+
+Generated files and folders (`datasets/`, `merged_flows.csv`, `merged_flows.parquet`, logs) are runtime artifacts and should not be committed.
+
+## Label Normalization Logic
+
+The merger maps multiple source label fields (for example: `class`, `label`, `attackType`, `category`) into a single `attack_label` target.
+
+- Values like `normal`, `benign`, and `background` are normalized to `normal`.
+- Other non-empty attack categories are normalized to `malicious`.
+
+## Notes
+
+- If you add new datasets, verify URLs before enabling them in `URLS`.
+- For Kaggle-based datasets, configure API credentials first.
+- Large merges can take significant time and disk space.
+
+Built by Majid alkindi
 
 
 
