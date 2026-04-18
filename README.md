@@ -55,7 +55,6 @@ The script does not create parquet part sidecar files.
 ## Installation
 
 ```bash
-git clone <your-repository-url>
 cd Network-Flow-Dataset-Merger-main
 pip install -r requirements.txt
 ```
